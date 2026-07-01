@@ -381,7 +381,81 @@ nav {
   font-size: 13px; font-weight: 300; color: var(--ink-mid);
   line-height: 1.7;
 }
+/* Custom Interactive Contact Cards */
+.interactive-contact-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    text-decoration: none; /* Strips the ugly blue underline */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(10px);
+}
 
+.interactive-contact-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.icc-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.5s ease;
+    margin-right: 1.25rem;
+    flex-shrink: 0;
+}
+
+.icc-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.icc-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #6b7280; /* Tailwind gray-500 */
+    margin-bottom: 0.25rem;
+    transition: color 0.3s;
+}
+
+.interactive-contact-card:hover .icc-label {
+    color: #ffffff;
+}
+
+.icc-value {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #ffffff;
+    font-style: italic;
+}
+
+.icc-arrow {
+    opacity: 0;
+    transform: translateX(-15px);
+    color: #6b7280;
+    font-size: 1.2rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.interactive-contact-card:hover .icc-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
 /* ══ EXPERIENCES ══ */
 #experiences {
   padding: 110px 52px;
@@ -660,7 +734,46 @@ nav {
   font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
   color: rgba(255,255,255,0.25);
 }
+/* --- Contact Section Styles --- */
 
+/* Ensures the cards have the exact same look as your Features/Specs sections */
+.contact-card {
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover effect to match your existing 'spec-card' hover animation */
+.contact-card:hover {
+    border-color: rgba(255, 0, 0, 0.3);
+    transform: translateY(-10px) scale(1.02);
+    background: rgba(255, 255, 255, 0.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* Icon specific animations */
+.group:hover .fab.fa-instagram {
+    background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.group:hover .fab.fa-whatsapp {
+    color: #25D366;
+}
+
+.group:hover .fa-phone {
+    color: #dc2626;
+}
+
+/* Ensure mobile responsiveness matches your current layout */
+@media (max-width: 768px) {
+    .contact-card {
+        padding: 2rem;
+    }
+}
 /* Progress bar inside join card */
 .join-progress-wrap { margin-bottom: 20px; }
 .join-progress-label {
@@ -946,60 +1059,264 @@ footer {
 </section>
 
 <!-- ══ CONTACT ══ -->
-<section id="contact">
-  <div class="contact-orb contact-orb-1"></div>
-  <div class="contact-orb contact-orb-2"></div>
 
-  <div class="contact-inner">
-    <div class="contact-header reveal">
-      <span class="section-eyebrow">Join the Community</span>
-      <h2 class="section-heading">Ready to begin<br><em>your practice?</em></h2>
-      <p>Join a circle of people building better habits — one small, intentional action at a time.</p>
+<style>
+/* ── Modern Contact Section (self-contained, no external icon/CSS deps) ── */
+#contact.contact-v2 {
+  padding: 110px 24px;
+  background: var(--navy);
+  position: relative;
+  overflow: hidden;
+}
+.cv2-orb {
+  position: absolute; border-radius: 50%; pointer-events: none; filter: blur(2px);
+  animation: cv2Float 9s ease-in-out infinite;
+}
+.cv2-orb-1 { width: 480px; height: 480px; top: -220px; right: -140px;
+  background: radial-gradient(circle, rgba(43,181,153,0.18) 0%, transparent 70%); }
+.cv2-orb-2 { width: 380px; height: 380px; bottom: -140px; left: -100px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  animation-delay: -4s; }
+@keyframes cv2Float {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(26px,-18px) scale(1.07); }
+}
+
+.cv2-inner { max-width: 880px; margin: 0 auto; position: relative; z-index: 1; }
+
+.cv2-header { text-align: center; margin-bottom: 56px; }
+.cv2-eyebrow {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 14px; display: block;
+}
+.cv2-heading {
+  font-family: 'Cormorant Garamond', serif; font-weight: 400; font-style: italic;
+  font-size: clamp(34px, 5vw, 50px); color: var(--white); line-height: 1.15; margin-bottom: 14px;
+}
+.cv2-heading em { color: var(--teal); font-style: italic; }
+.cv2-sub {
+  font-size: 14.5px; font-weight: 300; line-height: 1.8;
+  color: rgba(255,255,255,0.5); max-width: 420px; margin: 0 auto;
+}
+
+/* Icon contact cards */
+.cv2-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 18px; margin-bottom: 28px;
+}
+.cv2-card {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 16px; padding: 32px 20px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 22px;
+  text-decoration: none;
+  position: relative; overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: transform .4s cubic-bezier(.175,.885,.32,1.275), border-color .35s, background .35s;
+}
+.cv2-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--gradient); opacity: 0; transition: opacity .4s;
+}
+.cv2-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(43,181,153,0.45);
+}
+.cv2-card:hover::before { opacity: 0.08; }
+
+.cv2-icon-wrap {
+  width: 62px; height: 62px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(43,181,153,0.14);
+  border: 1px solid rgba(43,181,153,0.22);
+  position: relative; z-index: 1;
+  transition: background .35s, transform .35s;
+}
+.cv2-card:hover .cv2-icon-wrap { background: rgba(43,181,153,0.26); transform: scale(1.08) rotate(-4deg); }
+.cv2-icon-wrap svg { width: 26px; height: 26px; stroke: var(--teal); fill: none; }
+.cv2-icon-wrap svg.filled { fill: var(--teal); stroke: none; }
+
+.cv2-label {
+  font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: .18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.4); position: relative; z-index: 1;
+}
+.cv2-value {
+  font-size: 15.5px; font-weight: 600; color: var(--white);
+  position: relative; z-index: 1; word-break: break-word;
+}
+
+.cv2-live {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 100px; margin-top: 2px;
+  background: rgba(43,181,153,0.12); border: 1px solid rgba(43,181,153,0.25);
+  position: relative; z-index: 1;
+}
+.cv2-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); animation: cv2Pulse 2s ease-in-out infinite; }
+@keyframes cv2Pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(43,181,153,0.5); }
+  50% { box-shadow: 0 0 0 5px rgba(43,181,153,0); }
+}
+.cv2-live-text { font-family: 'DM Mono', monospace; font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); }
+
+/* Big Join CTA */
+.cv2-join {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  width: 100%; padding: 26px 32px;
+  background: var(--gradient);
+  border-radius: 22px;
+  text-decoration: none;
+  position: relative; overflow: hidden;
+  box-shadow: 0 14px 40px rgba(43,181,153,0.25);
+  transition: transform .35s, box-shadow .35s;
+}
+.cv2-join::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.18), transparent 60%);
+  opacity: 0; transition: opacity .4s;
+}
+.cv2-join:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(43,181,153,0.4); }
+.cv2-join:hover::after { opacity: 1; }
+
+.cv2-join-icon {
+  width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
+  background: rgba(255,255,255,0.16);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+}
+.cv2-join-icon svg { width: 24px; height: 24px; fill: var(--white); }
+.cv2-join-text { position: relative; z-index: 1; text-align: left; }
+.cv2-join-title {
+  font-family: 'DM Sans', sans-serif; font-size: 19px; font-weight: 700;
+  color: var(--white); letter-spacing: .01em; line-height: 1.3;
+}
+.cv2-join-sub {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: rgba(255,255,255,0.85); margin-top: 3px;
+}
+.cv2-join-arrow {
+  margin-left: auto; width: 34px; height: 34px; flex-shrink: 0;
+  border-radius: 50%; background: rgba(255,255,255,0.16);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+  transition: transform .35s;
+}
+.cv2-join:hover .cv2-join-arrow { transform: translateX(6px); }
+.cv2-join-arrow svg { width: 16px; height: 16px; stroke: var(--white); fill: none; }
+
+/* Pricing note */
+.cv2-price {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  margin: 24px auto 0; padding: 12px 26px;
+  background: rgba(43,181,153,0.12);
+  border: 1px solid rgba(43,181,153,0.4);
+  border-radius: 100px;
+  width: fit-content;
+  box-shadow: 0 0 0 4px rgba(43,181,153,0.06);
+  animation: cv2PriceGlow 2.6s ease-in-out infinite;
+}
+@keyframes cv2PriceGlow {
+  0%,100% { box-shadow: 0 0 0 4px rgba(43,181,153,0.06); border-color: rgba(43,181,153,0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(43,181,153,0.1); border-color: rgba(43,181,153,0.65); }
+}
+.cv2-price-amount {
+  font-family: 'DM Sans', sans-serif; font-weight: 800;
+  font-size: 26px; color: var(--teal); letter-spacing: -.01em;
+}
+.cv2-price-period {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.6);
+}
+
+@media (max-width: 720px) {
+  .cv2-grid { grid-template-columns: 1fr; }
+  .cv2-join { flex-wrap: wrap; padding: 22px; }
+  .cv2-join-text { text-align: center; width: 100%; }
+  .cv2-join-icon { margin: 0 auto; }
+  .cv2-join-arrow { margin: 0 auto; }
+  .cv2-price { margin-left: auto; margin-right: auto; }
+}
+</style>
+
+<section id="contact" class="contact-v2">
+  <div class="cv2-orb cv2-orb-1"></div>
+  <div class="cv2-orb cv2-orb-2"></div>
+
+  <div class="cv2-inner">
+
+    <div class="cv2-header reveal">
+      <span class="cv2-eyebrow">Get In Touch</span>
+      <h2 class="cv2-heading">Let's stay <em>connected</em></h2>
+      <p class="cv2-sub">Reach out on your favorite platform — we usually reply within a few hours.</p>
     </div>
 
-    <div >
-      <!-- LEFT: Contact methods -->
-      <div class="contact-cards reveal-left">
-        <a href="https://www.instagram.com/core.circle__/" target="_blank" class="contact-card">
-          <div class="fab fa-instagram text-xl">📸</div>
-          <div class="cc-body">
-            <div class="cc-label">Instagram</div>
-            <div class="cc-value">@core.circle__</div>
-            <div class="cc-sub">Daily inspiration & community updates</div>
-          </div>
-          <div class="cc-arrow">→</div>
-        </a>
+    <div class="cv2-grid reveal">
 
-        <a href="tel:+919895692417" class="contact-card">
-          <div class="cc-icon-wrap">📞</div>
-          <div class="cc-body">
-            <div class="cc-label">Call / WhatsApp</div>
-            <div class="cc-value">+91 98956 92417</div>
-            <div class="cc-sub">Talk to us directly — no bots, just people</div>
-          </div>
-          <div class="cc-arrow">→</div>
-        </a>
-
-        <a href="https://wa.me/919895692417" target="_blank" class="contact-card">
-          <div class="cc-icon-wrap">💬</div>
-          <div class="cc-body">
-            <div class="cc-label">WhatsApp</div>
-            <div class="cc-value">Message us now</div>
-            <div class="cc-sub">Quick replies, genuine conversations</div>
-          </div>
-          <div class="cc-arrow">→</div>
-        </a>
-
-        <div class="contact-live">
-          <div class="live-dot"></div>
-          <div class="live-text">Community is active · Join us today</div>
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/core.circle__/" target="_blank" rel="noopener" class="cv2-card">
+        <div class="cv2-icon-wrap">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="6"/>
+            <circle cx="12" cy="12" r="4.6"/>
+            <circle class="filled" cx="17.4" cy="6.6" r="1.15" stroke="none"/>
+          </svg>
         </div>
-      </div>
+        <span class="cv2-label">Instagram</span>
+        <span class="cv2-value">@core.circle__</span>
+      </a>
 
-    
-        <span class="join-note-small">Free · No commitment · Just growth</span>
+      <!-- WhatsApp -->
+      <a href="https://wa.me/919895692417" target="_blank" rel="noopener" class="cv2-card">
+        <div class="cv2-icon-wrap">
+          <svg class="filled" viewBox="0 0 24 24">
+            <path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.48 1.33 5L2 22l5.2-1.36a9.94 9.94 0 0 0 4.84 1.23h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm5.84 14.1c-.25.7-1.23 1.28-2.02 1.44-.54.11-1.24.2-3.6-.77-3.02-1.25-4.96-4.32-5.11-4.52-.15-.2-1.22-1.62-1.22-3.09 0-1.47.77-2.19 1.05-2.49.27-.3.6-.37.8-.37.2 0 .4 0 .58.01.19.01.44-.07.68.53.25.6.85 2.07.92 2.22.07.15.12.33.02.53-.1.2-.15.33-.3.5-.15.18-.31.4-.44.53-.15.15-.3.31-.13.6.17.3.76 1.26 1.64 2.04 1.13 1 2.08 1.32 2.38 1.47.3.15.47.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.76.83 2.06.98.3.15.5.23.57.36.08.13.08.75-.17 1.45z"/>
+          </svg>
+        </div>
+        <span class="cv2-label">WhatsApp</span>
+        <span class="cv2-value">+91 98956 92417</span>
+        <span class="cv2-live"><span class="cv2-live-dot"></span><span class="cv2-live-text">Online now</span></span>
+      </a>
+
+      <!-- Phone -->
+      <a href="tel:+919895692417" class="cv2-card">
+        <div class="cv2-icon-wrap">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.5 4h4l1.6 4.8-2.4 1.6a13 13 0 0 0 6 6l1.6-2.4L19.5 15.5v4c0 1-.9 1.6-1.8 1.4C10.6 19.6 4.4 13.4 3.1 6.3 2.9 5.4 3.5 4.5 4.5 4z"/>
+          </svg>
+        </div>
+        <span class="cv2-label">Call Us</span>
+        <span class="cv2-value">+91 98956 92417</span>
+      </a>
+
+    </div>
+
+    <!-- Big Join Us CTA (links to WhatsApp DM) -->
+    <a href="https://wa.me/919895692417?text=Hi!%20I'd%20like%20to%20join%20Core%20Circle" target="_blank" rel="noopener" class="cv2-join reveal">
+      <span class="cv2-join-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.48 1.33 5L2 22l5.2-1.36a9.94 9.94 0 0 0 4.84 1.23h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm5.84 14.1c-.25.7-1.23 1.28-2.02 1.44-.54.11-1.24.2-3.6-.77-3.02-1.25-4.96-4.32-5.11-4.52-.15-.2-1.22-1.62-1.22-3.09 0-1.47.77-2.19 1.05-2.49.27-.3.6-.37.8-.37.2 0 .4 0 .58.01.19.01.44-.07.68.53.25.6.85 2.07.92 2.22.07.15.12.33.02.53-.1.2-.15.33-.3.5-.15.18-.31.4-.44.53-.15.15-.3.31-.13.6.17.3.76 1.26 1.64 2.04 1.13 1 2.08 1.32 2.38 1.47.3.15.47.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.28.1 1.76.83 2.06.98.3.15.5.23.57.36.08.13.08.75-.17 1.45z"/>
+        </svg>
+      </span>
+      <span class="cv2-join-text">
+        <span class="cv2-join-title">Join Us Now</span>
+        <span class="cv2-join-sub">Message us on WhatsApp →</span>
+      </span>
+      <span class="cv2-join-arrow">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </span>
+    </a>
+
+    <!-- Pricing note -->
+    <div style="display:flex; justify-content:center;" class="reveal">
+      <div class="cv2-price">
+        <span class="cv2-price-amount">₹199</span>
+        <span class="cv2-price-period">/ month</span>
       </div>
     </div>
+
   </div>
 </section>
 
